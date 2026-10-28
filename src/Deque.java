@@ -22,8 +22,10 @@ public class Deque<Item> implements Iterable<Item> {
     /** Construct an empty deque. */
     public Deque() {
         // TODO: Initialize an empty linked list.
-        head = null;
-        tail = null;
+        head = new Node();
+        tail = new Node();
+        head.next = tail;
+        tail.prev = head;
         size = 0;
     }
 
@@ -46,20 +48,12 @@ public class Deque<Item> implements Iterable<Item> {
             throw new IllegalArgumentException("item cannot be null!");
         }
         size++;
-        if(head != null) {
-            Node oldHead = head;
-            head = new Node();
-            head.item = item;
-            head.next = oldHead;
-            if (tail == null) {
-                tail = oldHead;
-            }
-            oldHead.prev = head;
-        }
-        else{
-            head = new Node();
-            head.item = item;
-        }
+        Node old = head.next;
+        head.next = new Node();
+        head.next.item = item;
+        head.next.next = old;
+        head.next.prev = head;
+        head.next.next.prev = head.next;
     }
 
     /** Add an item to the back; reject null items with IllegalArgumentException. */
@@ -69,17 +63,12 @@ public class Deque<Item> implements Iterable<Item> {
             throw new IllegalArgumentException("item cannot be null!");
         }
         size++;
-        if(tail != null) {
-            Node oldTail = tail;
-            tail = new Node();
-            tail.item = item;
-            tail.prev = oldTail;
-            oldTail.next = tail;
-        }
-        else{
-            tail = new Node();
-            tail.item = item;
-        }
+        Node old = tail.prev;
+        tail.prev = new Node();
+        tail.prev.item = item;
+        tail.prev.prev = old;
+        tail.prev.next = tail;
+        tail.prev.prev.next = tail.prev;
     }
 
     /** Remove and return the front item; throw NoSuchElementException if empty. */
@@ -89,15 +78,10 @@ public class Deque<Item> implements Iterable<Item> {
             throw new NoSuchElementException("List is empty!");
         }
         size--;
-        Node oldHead = head;
-        if(head.next != null) {
-            head = head.next;
-            head.prev = null;
-        }
-        else{
-            head = null;
-        }
-        return oldHead.item;
+        Node old = head.next;
+        head.next = head.next.next;
+        head.next.prev = head;
+        return old.item;
     }
 
     /** Remove and return the back item; throw NoSuchElementException if empty. */
@@ -106,7 +90,11 @@ public class Deque<Item> implements Iterable<Item> {
         if(isEmpty()){
             throw new NoSuchElementException("List is empty!");
         }
-        return null;
+        size--;
+        Node old = tail.prev;
+        tail.prev = tail.prev.prev;
+        tail.prev.next = tail;
+        return old.item;
     }
 
     /** Return an iterator from front to back; next() and remove() follow the specified exceptions. */
@@ -117,10 +105,10 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     private class DequeIterator implements Iterator<Item>{
-        private Node current = head;
+        private Node current = head.next;
         @Override
         public boolean hasNext() {
-            return !current.equals(tail);
+            return current != null && !current.equals(tail);
         }
 
         @Override

@@ -174,19 +174,19 @@ public class DequeTest {
         testDequeConstructor();
         testDequeIsEmpty();
         testDequeSize();
-        // testDequeAddFirst();
-        // testDequeAddLast();
-        // testDequeAddFirstNull();
-        // testDequeAddLastNull();
-        // testDequeRemoveFirst();
-        // testDequeRemoveLast();
-        // testDequeRemoveFirstFromSingleton();
-        // testDequeRemoveLastFromSingleton();
-        // testDequeRemoveFirstEmpty();
-        // testDequeRemoveLastEmpty();
+        testDequeAddFirst();
+        testDequeAddLast();
+        testDequeAddFirstNull();
+        testDequeAddLastNull();
+        testDequeRemoveFirst();
+        testDequeRemoveLast();
+        testDequeRemoveFirstFromSingleton();
+        testDequeRemoveLastFromSingleton();
+        testDequeRemoveFirstEmpty();
+        testDequeRemoveLastEmpty();
         testDequeIterator();
-        // testDequeIteratorNextExhausted();
-        // testDequeIteratorRemoveUnsupported();
+        testDequeIteratorNextExhausted();
+        testDequeIteratorRemoveUnsupported();
 
         System.out.println("\nSummary: " + passed + " passed, " + failed + " failed.");
     }
