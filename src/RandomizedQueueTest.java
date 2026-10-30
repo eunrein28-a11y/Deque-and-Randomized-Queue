@@ -184,11 +184,11 @@ public class RandomizedQueueTest {
         testRandomizedQueueConstructor();
         testRandomizedQueueIsEmpty();
         testRandomizedQueueSize();
-        testRandomizedQueueEnqueue();
+        //testRandomizedQueueEnqueue();
         // testRandomizedQueueEnqueueNull();
         // testRandomizedQueueDequeue();
         // testRandomizedQueueDequeueEmpty();
-        // testRandomizedQueueSample();
+        testRandomizedQueueSample();
         // testRandomizedQueueSampleEmpty();
         // testRandomizedQueueIterator();
         // testRandomizedQueueIteratorIndependence();

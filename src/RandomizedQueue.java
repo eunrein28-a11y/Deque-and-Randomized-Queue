@@ -37,7 +37,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
         if(items.length == size){
             Item[] longer = (Item[]) new Object[items.length * 2]; //Boo! Hiss!
-            for(int i = 0; i < items.length; i++){
+            if(items.length == 0){
+               longer = (Item[]) new Object[1];
+            }
+            for(int i = 0; i < size; i++){
                 longer[i] = items[i];
             }
             items = longer;
@@ -49,13 +52,32 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     /** Remove and return a uniformly random item; throw NoSuchElementException if empty. */
     public Item dequeue() {
         // TODO: Pick a random index between 0 and size-1; swap the chosen item with the last item, then remove and resize as needed.
-        return null;
+        if(size == 0){
+            throw new NoSuchElementException("list cannot be empty!");
+        }
+        int i = (int) (Math.random() * (size - 1));
+        Item item = items[i];
+        items[i] = items[size - 1];
+        items[size - 1] = null;
+        size--;
+        if(size == items.length / 4 && size != 0){
+            Item[] shorter = (Item[]) new Object[items.length / 2]; //Boo! Hiss!
+            for(int j = 0 ; j < size + 1; j++){
+                shorter[j] = items[j];
+            }
+            items = shorter;
+        }
+        return item;
     }
 
     /** Return a uniformly random item without removing it; throw NoSuchElementException if empty. */
     public Item sample() {
         // TODO: Pick a random index between 0 and size-1 and return that array item without removing it.
-        return null;
+        if(size == 0){
+            throw new NoSuchElementException("list cannot be empty!");
+        }
+        Item item = items[(int) (Math.random() * (size - 1))];
+        return item;
     }
 
     /** Return an independent iterator in uniformly random order; define next() and remove() exceptions. */
@@ -65,17 +87,37 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return new RandomizedQueueIterator();
     }
     private class RandomizedQueueIterator implements Iterator<Item>{
-        private Item[] shuffledItems;
-        private int current;
+        private Item[] shuffledItems = shuffle();
+        private int current = 0;
         @Override
         public boolean hasNext() {
-            return false;
+            return current < items.length;
         }
 
         @Override
         public Item next() {
-            return null;
+            if(!hasNext()){
+                throw new NoSuchElementException("You've reached the end of this list!");
+            }
+            Item item = items[current];
+            current++;
+            return item;
         }
+    }
+
+    private Item[] shuffle(){ //Broken
+        Item[] shuffled = (Item[]) new Object[size]; //Boo! Hiss!
+        for(int i = 0; i < shuffled.length; i++){
+            int random = (int) (Math.random() * size);
+            if(items[random] != null){
+                shuffled[i] = items[random];
+                items[random] = null;
+            }
+            else{
+                i--;
+            }
+        }
+        return shuffled;
     }
 
     /** Run unit tests for the randomized queue. */
