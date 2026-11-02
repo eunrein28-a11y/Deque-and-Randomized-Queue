@@ -91,7 +91,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         private int current = 0;
         @Override
         public boolean hasNext() {
-            return current < items.length;
+            return current < size;
         }
 
         @Override
@@ -99,15 +99,25 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             if(!hasNext()){
                 throw new NoSuchElementException("You've reached the end of this list!");
             }
-            Item item = items[current];
+            Item item = shuffledItems[current];
             current++;
             return item;
         }
     }
 
-    private Item[] shuffle(){ //Broken
+    private Item[] shuffle(){
         Item[] shuffled = (Item[]) new Object[size]; //Boo! Hiss!
-        for(int i = 0; i < shuffled.length; i++){
+        for(int i = 0; i < size; i++){
+            shuffled[i] = items[i];
+        }
+        for(int i = 0 ; i < size; i++){
+            int j = i + (int) (Math.random() * (size - i));
+            Item temp = shuffled[i];
+            shuffled[i] = shuffled[j];
+            shuffled[j] = temp;
+        }
+        /* //Broken
+        for(int i = 0; i < size; i++){
             int random = (int) (Math.random() * size);
             if(items[random] != null){
                 shuffled[i] = items[random];
@@ -117,6 +127,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
                 i--;
             }
         }
+         */
         return shuffled;
     }
 
