@@ -35,11 +35,16 @@ public class DequeSortStarter {
         // Your code here.
         // Example of counting a compare:   if (lessThan(a, b)) { ... }
         // Example of counting a move:      other.addLast(d.removeFirst()); countMove();
+        if(d.size() < 2){
+            return;
+        }
         Deque<Integer> d1 = new Deque<>();
         Deque<Integer> d2 = new Deque<>();
-        if(d.size() > 2){
+        Deque<Integer> d3 = new Deque<>();
+        if(d.size() > 1){
             int s = d.size() / 2;
-            for(int i = 0; i < d.size(); i++){
+            int j = d.size();
+            for(int i = 0; i < j; i++){
                 if(i < s){
                     d1.addFirst(d.removeFirst());
                 }
@@ -49,11 +54,32 @@ public class DequeSortStarter {
             }
             sort(d1);
             sort(d2);
+            d3 = combine(d1, d2);
         }
+        d = combine(d, d3);
+    }
+
+    private static Deque<Integer> combine(Deque<Integer> d1, Deque<Integer> d2){
+        Deque<Integer> d = new Deque<>();
         while(d1.size() > 0 && d2.size() > 0){
             int a = d1.removeFirst();
             int b = d2.removeFirst();
+            if(a < b){
+                d.addLast(a);
+                d2.addFirst(b);
+            }
+            else{
+                d.addLast(b);
+                d1.addFirst(a);
+            }
         }
+        while(d1.size() > 0){
+            d.addLast(d1.removeFirst());
+        }
+        while(d2.size() > 0){
+            d.addLast(d2.removeFirst());
+        }
+        return d;
     }
 
     // ---------- Datasets ----------
